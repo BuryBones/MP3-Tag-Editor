@@ -8,12 +8,34 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.FileHandler;
+import java.util.logging.SimpleFormatter;
 
 public class StartModel {
 
+    private static Logger logger = Logger.getLogger(StartModel.class.getSimpleName());
 
     private StartController controller;
     private ModifyModel modifyModel;
+
+    public  StartModel() throws IOException {
+
+        // logger setup
+        // Exceptions' logs would be written to "errors.log"
+        FileHandler warning = new FileHandler("errors.log", false);
+        warning.setFormatter(new SimpleFormatter());
+        warning.setLevel(Level.WARNING);
+
+        // All logs would be written to "common.log"
+        FileHandler common = new FileHandler("common.log", false);
+        common.setFormatter(new SimpleFormatter());
+        common.setLevel(Level.ALL);
+
+        logger.addHandler(warning);
+        logger.addHandler(common);
+    }
 
     public void setController(StartController controller) {
         this.controller = controller;
@@ -39,6 +61,7 @@ public class StartModel {
 
     public void setDirectory(File directory) {
         this.directory = directory;
+        logger.info(String.format("Current directory: %s", directory.getAbsolutePath()) );
     }
     public File getDirectory() {
         return directory;
@@ -49,6 +72,7 @@ public class StartModel {
     }
     public void setFileSelected(boolean fileSelected) {
         isFileSelected = fileSelected;
+        logger.info(String.format("Any file selected: %b", isFileSelected));
     }
 
     public ArrayList<File> getSelectedFiles() {
@@ -76,27 +100,33 @@ public class StartModel {
                 return name.endsWith(".mp3");
             }
         });
+        logger.info(String.format("Returning a list of files in the current directory: ", directory.getAbsolutePath()));
         return filesInDirectory;
     }
     public void clearSelectedFiles() {
         selectedFiles.clear();
         mp3Files.clear();
         isFileSelected = false;
+        logger.info(String.format("selectedFiles: %b\n\rmp3files: %b\n\risFileSelected: %b",
+                                selectedFiles.isEmpty(), mp3Files.isEmpty(), isFileSelected));
     }
     public String[][] showProperties() throws UnsupportedTagException, InvalidDataException, IOException {
         File file = selectedFiles.get(0);
         MP3Data data = null;
         try {
             data = new MP3Data(file,file);
-
+            logger.info(String.format("Original file: %s;    MP3Data file: %s", file.getName(), data.getShortName()));
         } catch (UnsupportedTagException tagE) {
             String toShow = file.getName();
+            logger.warning(String.format("%s! File: %s",tagE, toShow));
             throw new UnsupportedTagException(toShow);
         } catch (InvalidDataException | IllegalArgumentException dataE) {
             String toShow = file.getName();
+            logger.warning(String.format("%s! File: %s",dataE, toShow));
             throw new InvalidDataException(toShow);
         } catch (IOException ioE) {
             String toShow = file.getName();
+            logger.warning(String.format("%s! File: %s",ioE, toShow));
             throw new IOException(toShow);
         }
         return data.showProperties();
@@ -104,17 +134,22 @@ public class StartModel {
 
     public void modify() throws UnsupportedTagException, InvalidDataException, IOException {
         if (mp3Files == null) mp3Files = new ArrayList<>(selectedFiles.size());
+        logger.info(String.format("mp3files list size: %d", mp3Files.size()));
         for (File file : selectedFiles) {
             try {
                 mp3Files.add(new MP3Data(file, directory));
+                logger.info(String.format("File: %s ADDED to mp3files", file.getAbsolutePath()));
             } catch (UnsupportedTagException tagE) {
                 String toShow = file.getName();
+                logger.warning(String.format("%s! File: %s",tagE, toShow));
                 throw new UnsupportedTagException(toShow);
             } catch (InvalidDataException | IllegalArgumentException dataE) {
                 String toShow = file.getName();
+                logger.warning(String.format("%s! File: %s",dataE, toShow));
                 throw new InvalidDataException(toShow);
             } catch (IOException ioE) {
                 String toShow = file.getName();
+                logger.warning(String.format("%s! File: %s",ioE, toShow));
                 throw new IOException(toShow);
             }
         }
