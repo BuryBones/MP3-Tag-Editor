@@ -179,7 +179,6 @@ public class ModifyView extends JDialog {
         cancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.clearSelectedFiles();
                 startView.resetSelectedFiles();
                 startView.setModifyView(null);
                 dispose();

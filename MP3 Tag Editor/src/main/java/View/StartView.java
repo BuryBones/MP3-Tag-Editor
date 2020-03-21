@@ -127,13 +127,15 @@ public class StartView {
         fileList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if (fileList.getSelectedValue() != null ) {
-                    controller.setSelectedFiles(new ArrayList<>(fileList.getSelectedValuesList()));
-                    controller.setFileSelected(true);
-                    updateStatus(fileList.getSelectedValuesList().size());
-                } else {
-                    controller.setFileSelected(false);
-                    updateStatus(0);
+                if (!e.getValueIsAdjusting()) {
+                    if (fileList.getSelectedValue() != null) {
+                        controller.setSelectedFiles(new ArrayList<>(fileList.getSelectedValuesList()));
+                        controller.setFileSelected(true);
+                        updateStatus(fileList.getSelectedValuesList().size());
+                    } else {
+                        controller.clearSelectedFiles();
+                        updateStatus(0);
+                    }
                 }
             }
         });
@@ -247,7 +249,6 @@ public class StartView {
     // Public methods
     public void resetSelectedFiles() {
         fileList.clearSelection();
-        controller.setFileSelected(false);
     }
     public void updateStatus(int filesNumber) {
         if (filesNumber != 0) {
