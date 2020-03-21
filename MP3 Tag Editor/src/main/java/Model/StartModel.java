@@ -52,16 +52,16 @@ public class StartModel {
     and to determine which version of ModifyView to show.
     The files are not mp3files yet
      */
-    private ArrayList<File> selectedFiles = new ArrayList<>();
+    private ArrayList<File> selectedFiles = null;
     /*
-    Upon pressing the 'Modify' button files MP3Data objects are made from selected files
+    Upon pressing the 'Modify' button MP3Data objects are made from selected files
     and kept in the following ArrayList
      */
-    private ArrayList<MP3Data> mp3Files = new ArrayList<>();
+    private ArrayList<MP3Data> mp3Files = null;
 
     public void setDirectory(File directory) {
         this.directory = directory;
-        logger.info(String.format("Current directory: %s", directory.getAbsolutePath()) );
+        logger.info(String.format("Directory changed to: %s", directory.getAbsolutePath()) );
     }
     public File getDirectory() {
         return directory;
@@ -72,7 +72,7 @@ public class StartModel {
     }
     public void setFileSelected(boolean fileSelected) {
         isFileSelected = fileSelected;
-        logger.info(String.format("Any file selected: %b", isFileSelected));
+        logger.info(String.format("File selected: %b", isFileSelected));
     }
 
     public ArrayList<File> getSelectedFiles() {
@@ -100,14 +100,14 @@ public class StartModel {
                 return name.endsWith(".mp3");
             }
         });
-        logger.info(String.format("Returning a list of files in the current directory: ", directory.getAbsolutePath()));
+        logger.info(String.format("Returning a list of files in the current directory: %s", directory.getAbsolutePath()));
         return filesInDirectory;
     }
     public void clearSelectedFiles() {
         selectedFiles.clear();
         mp3Files.clear();
         isFileSelected = false;
-        logger.info(String.format("selectedFiles: %b\n\rmp3files: %b\n\risFileSelected: %b",
+        logger.info(String.format("selectedFiles empty: %b\n\rmp3files empty: %b\n\risFileSelected: %b",
                                 selectedFiles.isEmpty(), mp3Files.isEmpty(), isFileSelected));
     }
     public String[][] showProperties() throws UnsupportedTagException, InvalidDataException, IOException {
@@ -134,7 +134,8 @@ public class StartModel {
 
     public void modify() throws UnsupportedTagException, InvalidDataException, IOException {
         if (mp3Files == null) mp3Files = new ArrayList<>(selectedFiles.size());
-        logger.info(String.format("mp3files list size: %d", mp3Files.size()));
+        logger.info(String.format("selectedFiles list size: %d\n\rmp3files is empty: %b",
+                                                selectedFiles.size(), mp3Files.isEmpty()));
         for (File file : selectedFiles) {
             try {
                 mp3Files.add(new MP3Data(file, directory));
@@ -154,5 +155,6 @@ public class StartModel {
             }
         }
         modifyModel = new ModifyModel(this,mp3Files.size() > 1);
+        logger.info(String.format("New ModifyModel created from StartModel, multipleFiles: %b", mp3Files.size() > 1));
     }
 }
