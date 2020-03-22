@@ -12,11 +12,40 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class ModifyView extends JDialog {
 
     private ModifyController controller;
     private StartView startView = StartView.getInstance();
+
+    // logger setup
+    private static Logger logger = Logger.getLogger(ModifyView.class.getSimpleName());
+    static {
+        try {
+            FileHandler warning = new FileHandler("errors.log");
+            warning.setFormatter(new SimpleFormatter());
+            warning.setLevel(Level.WARNING);
+            logger.addHandler(warning);
+        } catch (IOException ioE) {
+            String errorMessage = logger.getName() + " logger setup error.";
+            System.err.println(errorMessage + " Exception message: " + ioE.getMessage());
+            main.java.Model.Main.mainLogger.log(Level.WARNING, errorMessage, ioE);
+        }
+        try {
+            FileHandler common = new FileHandler("common.log");
+            common.setFormatter(new SimpleFormatter());
+            common.setLevel(Level.ALL);
+            logger.addHandler(common);
+        } catch (IOException ioE) {
+            String errorMessage = logger.getName() + " logger setup error.";
+            System.err.println(errorMessage + " Exception message: " + ioE.getMessage());
+            main.java.Model.Main.mainLogger.log(Level.WARNING, errorMessage, ioE);
+        }
+    }
 
     private boolean isManuallyChanged;
     private Object[][] tableData;
@@ -119,6 +148,7 @@ public class ModifyView extends JDialog {
         saveTableButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                logger.info(String.format("%s button pressed", saveTableButton.getText()));
                 isManuallyChanged = true;
                 tableData = new Object[table.getRowCount()][2];
                 for (int i = 0; i < table.getRowCount(); i++) {
@@ -150,6 +180,7 @@ public class ModifyView extends JDialog {
         proposeArtist.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                logger.info(String.format("%s button pressed", proposeArtist.getText()));
                 if (titleText.getText().isEmpty() || titleText.getText().equals(" ? ")) {
                     titleText.setText("Enter a title");
                     artistText.setText(" ? ");
@@ -162,6 +193,7 @@ public class ModifyView extends JDialog {
         proposeTitle.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                logger.info(String.format("%s button pressed", proposeTitle.getText()));
                 if (artistText.getText().isEmpty() || artistText.getText().equals(" ? ")) {
                     artistText.setText("Enter an artist");
                     titleText.setText(" ? ");
@@ -179,6 +211,7 @@ public class ModifyView extends JDialog {
         cancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                logger.info(String.format("%s button pressed", cancel.getText()));
                 startView.resetSelectedFiles();
                 startView.setModifyView(null);
                 dispose();
@@ -187,6 +220,7 @@ public class ModifyView extends JDialog {
         accept.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                logger.info(String.format("%s button pressed", accept.getText()));
                 try {
                     if (isManuallyChanged) {
                         controller.submit(getDataFromTable(), tagCheck.isSelected());

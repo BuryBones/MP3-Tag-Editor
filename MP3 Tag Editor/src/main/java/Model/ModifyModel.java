@@ -16,25 +16,36 @@ import java.util.regex.Pattern;
 
 public class ModifyModel {
 
+    // logger setup
     private static Logger logger = Logger.getLogger(ModifyModel.class.getSimpleName());
+    static
+    {
+        try {
+            FileHandler warning = new FileHandler("errors.log");
+            warning.setFormatter(new SimpleFormatter());
+            warning.setLevel(Level.WARNING);
+            logger.addHandler(warning);
+        } catch (IOException ioE) {
+            String errorMessage = logger.getName() + " logger setup error.";
+            System.err.println(errorMessage + " Exception message: " + ioE.getMessage());
+            main.java.Model.Main.mainLogger.log(Level.WARNING, errorMessage, ioE);
+        }
+        try {
+            FileHandler common = new FileHandler("common.log");
+            common.setFormatter(new SimpleFormatter());
+            common.setLevel(Level.ALL);
+            logger.addHandler(common);
+        } catch (IOException ioE) {
+            String errorMessage = logger.getName() + " logger setup error.";
+            System.err.println(errorMessage + " Exception message: " + ioE.getMessage());
+            main.java.Model.Main.mainLogger.log(Level.WARNING, errorMessage, ioE);
+        }
+    }
 
     private StartModel startModel;
     private ModifyController controller;
 
-    public ModifyModel(StartModel startModel, boolean isMultipleFiles) throws IOException {
-
-        // logger setup
-        FileHandler warning = new FileHandler("errors.log", false);
-        warning.setFormatter(new SimpleFormatter());
-        warning.setLevel(Level.WARNING);
-
-        FileHandler common = new FileHandler("common.log", false);
-        common.setFormatter(new SimpleFormatter());
-        common.setLevel(Level.ALL);
-
-        logger.addHandler(warning);
-        logger.addHandler(common);
-
+    public ModifyModel(StartModel startModel, boolean isMultipleFiles) {
         this.startModel = startModel;
         controller = new ModifyController(this,isMultipleFiles);
         this.isMultipleFiles = isMultipleFiles;

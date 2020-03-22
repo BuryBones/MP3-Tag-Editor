@@ -15,27 +15,34 @@ import java.util.logging.SimpleFormatter;
 
 public class StartModel {
 
+    // logger setup
     private static Logger logger = Logger.getLogger(StartModel.class.getSimpleName());
+    static
+    {
+        try {
+            FileHandler warning = new FileHandler("errors.log");
+            warning.setFormatter(new SimpleFormatter());
+            warning.setLevel(Level.WARNING);
+            logger.addHandler(warning);
+        } catch (IOException ioE) {
+            String errorMessage = logger.getName() + " logger setup error.";
+            System.err.println(errorMessage + " Exception message: " + ioE.getMessage());
+            main.java.Model.Main.mainLogger.log(Level.WARNING, errorMessage, ioE);
+        }
+        try {
+            FileHandler common = new FileHandler("common.log");
+            common.setFormatter(new SimpleFormatter());
+            common.setLevel(Level.ALL);
+            logger.addHandler(common);
+        } catch (IOException ioE) {
+            String errorMessage = logger.getName() + " logger setup error.";
+            System.err.println(errorMessage + " Exception message: " + ioE.getMessage());
+            main.java.Model.Main.mainLogger.log(Level.WARNING, errorMessage, ioE);
+        }
+    }
 
     private StartController controller;
     private ModifyModel modifyModel;
-
-    public  StartModel() throws IOException {
-
-        // logger setup
-        // Exceptions' logs would be written to "errors.log"
-        FileHandler warning = new FileHandler("errors.log", false);
-        warning.setFormatter(new SimpleFormatter());
-        warning.setLevel(Level.WARNING);
-
-        // All logs would be written to "common.log"
-        FileHandler common = new FileHandler("common.log", false);
-        common.setFormatter(new SimpleFormatter());
-        common.setLevel(Level.ALL);
-
-        logger.addHandler(warning);
-        logger.addHandler(common);
-    }
 
     public void setController(StartController controller) {
         this.controller = controller;
@@ -155,12 +162,7 @@ public class StartModel {
                 throw new IOException(toShow);
             }
         }
-        // That exception should not be thrown to View part
-        try {
-            modifyModel = new ModifyModel(this, mp3Files.size() > 1);
-            logger.info(String.format("New ModifyModel created from StartModel, multipleFiles: %b", mp3Files.size() > 1));
-        } catch (IOException ioE) {
-            logger.log(Level.WARNING,"Failed to organize logging to .log files for ModifyModel.",ioE);
-        }
+        modifyModel = new ModifyModel(this, mp3Files.size() > 1);
+        logger.info(String.format("New ModifyModel created from StartModel, multipleFiles: %b", mp3Files.size() > 1));
     }
 }

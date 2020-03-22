@@ -18,6 +18,7 @@ public class MP3Data {
     This class contains the mp3 file itself, it's directory, tag object and fields to be written to the tag
      */
 
+    // logger setup
     private static Logger logger = Logger.getLogger(MP3Data.class.getSimpleName());
     static
     {
@@ -25,16 +26,21 @@ public class MP3Data {
             FileHandler warning = new FileHandler("errors.log");
             warning.setFormatter(new SimpleFormatter());
             warning.setLevel(Level.WARNING);
-
+            logger.addHandler(warning);
+        } catch (IOException ioE) {
+            String errorMessage = logger.getName() + " logger setup error.";
+            System.err.println(errorMessage + " Exception message: " + ioE.getMessage());
+            main.java.Model.Main.mainLogger.log(Level.WARNING, errorMessage, ioE);
+        }
+        try {
             FileHandler common = new FileHandler("common.log");
             common.setFormatter(new SimpleFormatter());
             common.setLevel(Level.ALL);
-
-            logger.addHandler(warning);
             logger.addHandler(common);
-
         } catch (IOException ioE) {
-            System.err.println("Failed to organize logging to .log files. Exception message: " + ioE.getMessage());
+            String errorMessage = logger.getName() + " logger setup error.";
+            System.err.println(errorMessage + " Exception message: " + ioE.getMessage());
+            main.java.Model.Main.mainLogger.log(Level.WARNING, errorMessage, ioE);
         }
     }
 

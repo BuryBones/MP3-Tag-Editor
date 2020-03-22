@@ -17,6 +17,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class StartView {
 
@@ -33,6 +37,32 @@ public class StartView {
     private StartController controller;
     public void setController(StartController controller) {
         this.controller = controller;
+    }
+
+    // logger setup
+    private static Logger logger = Logger.getLogger(StartView.class.getSimpleName());
+    static
+    {
+        try {
+            FileHandler warning = new FileHandler("errors.log");
+            warning.setFormatter(new SimpleFormatter());
+            warning.setLevel(Level.WARNING);
+            logger.addHandler(warning);
+        } catch (IOException ioE) {
+            String errorMessage = logger.getName() + " logger setup error.";
+            System.err.println(errorMessage + " Exception message: " + ioE.getMessage());
+            main.java.Model.Main.mainLogger.log(Level.WARNING, errorMessage, ioE);
+        }
+        try {
+            FileHandler common = new FileHandler("common.log");
+            common.setFormatter(new SimpleFormatter());
+            common.setLevel(Level.ALL);
+            logger.addHandler(common);
+        } catch (IOException ioE) {
+            String errorMessage = logger.getName() + " logger setup error.";
+            System.err.println(errorMessage + " Exception message: " + ioE.getMessage());
+            main.java.Model.Main.mainLogger.log(Level.WARNING, errorMessage, ioE);
+        }
     }
 
     private ModifyView modifyView;
@@ -82,6 +112,7 @@ public class StartView {
         select.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                logger.info(String.format("%s button pressed", select.getText()));
                 if (controller.isFileSelected()) controller.clearSelectedFiles();
                 JFileChooser chooser = getFileChooser();
                 chooser.showDialog(result,"Select");
@@ -91,6 +122,7 @@ public class StartView {
         modify.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                logger.info(String.format("%s button pressed", modify.getText()));
                 if (controller.isFileSelected()) {
                     try {
                         controller.modify();
@@ -183,6 +215,7 @@ public class StartView {
         show.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                logger.info(String.format("%s button pressed", show.getText()));
                 if(controller.isFileSelected()) {
                     try {
                         String[][] combinedTableData = controller.showProperties();
@@ -214,6 +247,7 @@ public class StartView {
         exit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                logger.info(String.format("%s button pressed", exit.getText()));
                 frame.dispose();
                 System.exit(0);
             }
