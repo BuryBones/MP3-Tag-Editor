@@ -118,15 +118,15 @@ public class StartModel {
             logger.info(String.format("Original file: %s;    MP3Data file: %s", file.getName(), data.getShortName()));
         } catch (UnsupportedTagException tagE) {
             String toShow = file.getName();
-            logger.warning(String.format("%s! File: %s",tagE, toShow));
+            logger.log(Level.WARNING,String.format("Error in file: %s", toShow), tagE);
             throw new UnsupportedTagException(toShow);
         } catch (InvalidDataException | IllegalArgumentException dataE) {
             String toShow = file.getName();
-            logger.warning(String.format("%s! File: %s",dataE, toShow));
+            logger.log(Level.WARNING,String.format("Error in file: %s", toShow), dataE);
             throw new InvalidDataException(toShow);
         } catch (IOException ioE) {
             String toShow = file.getName();
-            logger.warning(String.format("%s! File: %s",ioE, toShow));
+            logger.log(Level.WARNING,String.format("Error in file: %s", toShow), ioE);
             throw new IOException(toShow);
         }
         return data.showProperties();
@@ -142,15 +142,15 @@ public class StartModel {
                 logger.info(String.format("File: %s ADDED to mp3files", file.getAbsolutePath()));
             } catch (UnsupportedTagException tagE) {
                 String toShow = file.getName();
-                logger.warning(String.format("%s! File: %s",tagE, toShow));
+                logger.log(Level.WARNING,String.format("Error in file: %s", toShow), tagE);
                 throw new UnsupportedTagException(toShow);
             } catch (InvalidDataException | IllegalArgumentException dataE) {
                 String toShow = file.getName();
-                logger.warning(String.format("%s! File: %s",dataE, toShow));
+                logger.log(Level.WARNING,String.format("Error in file: %s", toShow), dataE);
                 throw new InvalidDataException(toShow);
             } catch (IOException ioE) {
                 String toShow = file.getName();
-                logger.warning(String.format("%s! File: %s",ioE, toShow));
+                logger.log(Level.WARNING,String.format("Error in file: %s", toShow), ioE);
                 throw new IOException(toShow);
             }
         }
