@@ -137,6 +137,7 @@ public class StartModel {
         logger.info(String.format("selectedFiles list size: %d\n\rmp3files is empty: %b",
                                                 selectedFiles.size(), mp3Files.isEmpty()));
         for (File file : selectedFiles) {
+            // These exceptions are to be used in View part to display error dialogs
             try {
                 mp3Files.add(new MP3Data(file, directory));
                 logger.info(String.format("File: %s ADDED to mp3files", file.getAbsolutePath()));
@@ -154,7 +155,12 @@ public class StartModel {
                 throw new IOException(toShow);
             }
         }
-        modifyModel = new ModifyModel(this,mp3Files.size() > 1);
-        logger.info(String.format("New ModifyModel created from StartModel, multipleFiles: %b", mp3Files.size() > 1));
+        // That exception should not be thrown to View part
+        try {
+            modifyModel = new ModifyModel(this, mp3Files.size() > 1);
+            logger.info(String.format("New ModifyModel created from StartModel, multipleFiles: %b", mp3Files.size() > 1));
+        } catch (IOException ioE) {
+            logger.log(Level.WARNING,"Failed to organize logging to .log files for ModifyModel.",ioE);
+        }
     }
 }

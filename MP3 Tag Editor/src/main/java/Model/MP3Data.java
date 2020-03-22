@@ -7,12 +7,36 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class MP3Data {
 
     /*
     This class contains the mp3 file itself, it's directory, tag object and fields to be written to the tag
      */
+
+    private static Logger logger = Logger.getLogger(MP3Data.class.getSimpleName());
+    static
+    {
+        try {
+            FileHandler warning = new FileHandler("errors.log");
+            warning.setFormatter(new SimpleFormatter());
+            warning.setLevel(Level.WARNING);
+
+            FileHandler common = new FileHandler("common.log");
+            common.setFormatter(new SimpleFormatter());
+            common.setLevel(Level.ALL);
+
+            logger.addHandler(warning);
+            logger.addHandler(common);
+
+        } catch (IOException ioE) {
+            System.err.println("Failed to organize logging to .log files. Exception message: " + ioE.getMessage());
+        }
+    }
 
     private Mp3File mp3File;
     private ID3v2 tag;
@@ -42,6 +66,7 @@ public class MP3Data {
             tag = new ID3v24Tag();
             mp3File.setId3v2Tag(tag);
         }
+        logger.info("MP3Data object created from file: " + file.getName());
     }
 
     String getName() {
@@ -89,14 +114,15 @@ public class MP3Data {
         try {
             tag.setGenreDescription(genre);
         } catch (IllegalArgumentException ae) {
-            tag.setGenreDescription("Other");
+            logger.log(Level.WARNING,String.format("Genre tag '%s' wasn't set! 'Other' is used instead.", genre),ae);
+            genre = "Other";
+            tag.setGenreDescription(genre);
         }
         tag.setTitle(name);
         tag.setTrack(number);
         tag.setYear(year);
-    }
-    private Mp3File getMp3File() {
-        return mp3File;
+        logger.info(String.format("Tag updated.\n\rTitle: %s\n\rArtist: %s\n\rAlbum: %s\n\rTrack#: %d\n\rYear: %s\n\rGenre: %s",
+                name, artist, album, number, year, genre));
     }
 
     void saveChanges(boolean version2_3) throws IOException, NotSupportedException {
@@ -106,13 +132,14 @@ public class MP3Data {
         mp3File.setId3v2Tag(tag);
         File savingFolder = new File(directory.toString() + "\\" + "Modified");
         if (!savingFolder.isDirectory()) {
-            if (!savingFolder.mkdir()) throw new IOException("Failed to create a folder!");
+            if (!savingFolder.mkdir()) throw new IOException("Failed to create a folder " + savingFolder.getAbsolutePath());
         }
         mp3File.save(savingFolder.getAbsolutePath() + "\\" + fileName);
+        logger.info(String.format("MP3 File %s saved to %s", fileName, savingFolder));
     }
 
     String getShortName() {
-        Path path = Paths.get(getMp3File().getFilename());
+        Path path = Paths.get(mp3File.getFilename());
         return path.getFileName().toString();
     }
 

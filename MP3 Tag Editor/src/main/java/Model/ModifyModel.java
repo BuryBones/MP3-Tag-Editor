@@ -7,18 +7,39 @@ import com.mpatric.mp3agic.NotSupportedException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ModifyModel {
 
+    private static Logger logger = Logger.getLogger(ModifyModel.class.getSimpleName());
+
     private StartModel startModel;
     private ModifyController controller;
 
-    public ModifyModel(StartModel startModel, boolean isMultipleFiles) {
+    public ModifyModel(StartModel startModel, boolean isMultipleFiles) throws IOException {
+
+        // logger setup
+        FileHandler warning = new FileHandler("errors.log", false);
+        warning.setFormatter(new SimpleFormatter());
+        warning.setLevel(Level.WARNING);
+
+        FileHandler common = new FileHandler("common.log", false);
+        common.setFormatter(new SimpleFormatter());
+        common.setLevel(Level.ALL);
+
+        logger.addHandler(warning);
+        logger.addHandler(common);
+
         this.startModel = startModel;
         controller = new ModifyController(this,isMultipleFiles);
         this.isMultipleFiles = isMultipleFiles;
+
+        logger.info(String.format("ModifyModel, isMultipleFiles: %b", isMultipleFiles));
     }
 
     private boolean isMultipleFiles;
@@ -35,8 +56,10 @@ public class ModifyModel {
     private String genre = "";
     private String originalArtist = "";
 
+    // The following method is used if there were no manual changes in modify 'manual' table
     public void submit(String[] submitData, boolean use3v23) throws IOException, NotSupportedException {
         // [0] title; [1] track; [2] artist; [3] album; [4] year; [5] genre;
+        logger.info(String.format("Submit invoked (NO manual changes) multipleFiles: %b", isMultipleFiles));
         if (isMultipleFiles) {
             for ( MP3Data d : startModel.getMp3Files() ) {
                 d.setArtist(submitData[2]);
@@ -60,8 +83,10 @@ public class ModifyModel {
             singleFile.saveChanges(use3v23);
         }
     }
+    // the following method is used when modify 'manual' table was changed and saved
     public void submit (Object[][] submitData, boolean use3v23) throws IOException, NotSupportedException {
         // [0] title; [1] track; [2] artist; [3] album; [4] year; [5] genre;
+        logger.info("Submit invoked (WITH manual changes)");
         for ( int i = 0; i < startModel.getMp3Files().size(); i++ ) {
             MP3Data d = startModel.getMp3Files().get(i);
             Object[] fileData = submitData[i];
