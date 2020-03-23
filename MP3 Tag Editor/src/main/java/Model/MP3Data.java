@@ -7,10 +7,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 public class MP3Data {
 
@@ -22,26 +20,8 @@ public class MP3Data {
     private static Logger logger = Logger.getLogger(MP3Data.class.getSimpleName());
     static
     {
-        try {
-            FileHandler warning = new FileHandler("errors.log");
-            warning.setFormatter(new SimpleFormatter());
-            warning.setLevel(Level.WARNING);
-            logger.addHandler(warning);
-        } catch (IOException ioE) {
-            String errorMessage = logger.getName() + " logger setup error.";
-            System.err.println(errorMessage + " Exception message: " + ioE.getMessage());
-            main.java.Model.Main.mainLogger.log(Level.WARNING, errorMessage, ioE);
-        }
-        try {
-            FileHandler common = new FileHandler("common.log");
-            common.setFormatter(new SimpleFormatter());
-            common.setLevel(Level.ALL);
-            logger.addHandler(common);
-        } catch (IOException ioE) {
-            String errorMessage = logger.getName() + " logger setup error.";
-            System.err.println(errorMessage + " Exception message: " + ioE.getMessage());
-            main.java.Model.Main.mainLogger.log(Level.WARNING, errorMessage, ioE);
-        }
+            logger.addHandler(main.java.Model.Main.warning);
+            logger.addHandler(main.java.Model.Main.common);
     }
 
     private Mp3File mp3File;
@@ -127,7 +107,7 @@ public class MP3Data {
         tag.setTitle(name);
         tag.setTrack(number);
         tag.setYear(year);
-        logger.info(String.format("Tag updated.\n\rTitle: %s\n\rArtist: %s\n\rAlbum: %s\n\rTrack#: %d\n\rYear: %s\n\rGenre: %s",
+        logger.info(String.format("Tag updated. Title: %s; Artist: %s; Album: %s; Track#: %s; Year: %s; Genre: %s",
                 name, artist, album, number, year, genre));
     }
 

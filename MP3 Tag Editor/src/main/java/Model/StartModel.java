@@ -19,26 +19,8 @@ public class StartModel {
     private static Logger logger = Logger.getLogger(StartModel.class.getSimpleName());
     static
     {
-        try {
-            FileHandler warning = new FileHandler("errors.log");
-            warning.setFormatter(new SimpleFormatter());
-            warning.setLevel(Level.WARNING);
-            logger.addHandler(warning);
-        } catch (IOException ioE) {
-            String errorMessage = logger.getName() + " logger setup error.";
-            System.err.println(errorMessage + " Exception message: " + ioE.getMessage());
-            main.java.Model.Main.mainLogger.log(Level.WARNING, errorMessage, ioE);
-        }
-        try {
-            FileHandler common = new FileHandler("common.log");
-            common.setFormatter(new SimpleFormatter());
-            common.setLevel(Level.ALL);
-            logger.addHandler(common);
-        } catch (IOException ioE) {
-            String errorMessage = logger.getName() + " logger setup error.";
-            System.err.println(errorMessage + " Exception message: " + ioE.getMessage());
-            main.java.Model.Main.mainLogger.log(Level.WARNING, errorMessage, ioE);
-        }
+        logger.addHandler(main.java.Model.Main.warning);
+        logger.addHandler(main.java.Model.Main.common);
     }
 
     private StartController controller;
@@ -59,12 +41,12 @@ public class StartModel {
     and to determine which version of ModifyView to show.
     The files are not mp3files yet
      */
-    private ArrayList<File> selectedFiles = null;
+    private ArrayList<File> selectedFiles = new ArrayList<>();
     /*
     Upon pressing the 'Modify' button MP3Data objects are made from selected files
     and kept in the following ArrayList
      */
-    private ArrayList<MP3Data> mp3Files = null;
+    private ArrayList<MP3Data> mp3Files = new ArrayList<>();
 
     public void setDirectory(File directory) {
         this.directory = directory;
@@ -114,7 +96,7 @@ public class StartModel {
         selectedFiles.clear();
         mp3Files.clear();
         isFileSelected = false;
-        logger.info(String.format("selectedFiles empty: %b\n\rmp3files empty: %b\n\risFileSelected: %b",
+        logger.info(String.format("selectedFiles empty: %b; mp3files empty: %b; isFileSelected: %b",
                                 selectedFiles.isEmpty(), mp3Files.isEmpty(), isFileSelected));
     }
     public String[][] showProperties() throws UnsupportedTagException, InvalidDataException, IOException {
@@ -141,7 +123,7 @@ public class StartModel {
 
     public void modify() throws UnsupportedTagException, InvalidDataException, IOException {
         if (mp3Files == null) mp3Files = new ArrayList<>(selectedFiles.size());
-        logger.info(String.format("selectedFiles list size: %d\n\rmp3files is empty: %b",
+        logger.info(String.format("selectedFiles list size: %d; mp3files is empty: %b",
                                                 selectedFiles.size(), mp3Files.isEmpty()));
         for (File file : selectedFiles) {
             // These exceptions are to be used in View part to display error dialogs

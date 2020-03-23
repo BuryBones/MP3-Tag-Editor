@@ -14,10 +14,12 @@ public class Main {
 
     // logger setup
     public static Logger mainLogger = Logger.getLogger(Main.class.getSimpleName());
+    public static FileHandler warning = null;
+    public static FileHandler common = null;
     static
     {
         try {
-            FileHandler warning = new FileHandler("errors.log");
+            warning = new FileHandler("errors.log");
             warning.setFormatter(new SimpleFormatter());
             warning.setLevel(Level.WARNING);
             mainLogger.addHandler(warning);
@@ -27,7 +29,7 @@ public class Main {
             mainLogger.log(Level.WARNING, errorMessage, ioE);
         }
         try {
-            FileHandler common = new FileHandler("common.log");
+            common = new FileHandler("common.log");
             common.setFormatter(new SimpleFormatter());
             common.setLevel(Level.ALL);
             mainLogger.addHandler(common);

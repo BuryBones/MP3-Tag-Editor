@@ -24,27 +24,10 @@ public class ModifyView extends JDialog {
 
     // logger setup
     private static Logger logger = Logger.getLogger(ModifyView.class.getSimpleName());
-    static {
-        try {
-            FileHandler warning = new FileHandler("errors.log");
-            warning.setFormatter(new SimpleFormatter());
-            warning.setLevel(Level.WARNING);
-            logger.addHandler(warning);
-        } catch (IOException ioE) {
-            String errorMessage = logger.getName() + " logger setup error.";
-            System.err.println(errorMessage + " Exception message: " + ioE.getMessage());
-            main.java.Model.Main.mainLogger.log(Level.WARNING, errorMessage, ioE);
-        }
-        try {
-            FileHandler common = new FileHandler("common.log");
-            common.setFormatter(new SimpleFormatter());
-            common.setLevel(Level.ALL);
-            logger.addHandler(common);
-        } catch (IOException ioE) {
-            String errorMessage = logger.getName() + " logger setup error.";
-            System.err.println(errorMessage + " Exception message: " + ioE.getMessage());
-            main.java.Model.Main.mainLogger.log(Level.WARNING, errorMessage, ioE);
-        }
+    static
+    {
+        logger.addHandler(main.java.Model.Main.warning);
+        logger.addHandler(main.java.Model.Main.common);
     }
 
     private boolean isManuallyChanged;
