@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class Main {
-    private static String version = "0.99";
+    private static String version = "1.00";
 
     // logger setup
     public static Logger mainLogger = Logger.getLogger(Main.class.getSimpleName());
@@ -47,8 +47,6 @@ public class Main {
     public static String getVersion() {
         return version;
     }
-
-    // TODO: better setup access modifiers
 
     public static void main(String [] args) {
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
