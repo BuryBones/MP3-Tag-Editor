@@ -48,11 +48,9 @@ public class Main {
         return version;
     }
 
-    // TODO: check logging!
     // TODO: better setup access modifiers
 
     public static void main(String [] args) {
-//        Thread.setUncaughtExceptionHandler(new ExceptionHandler());
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         mainLogger.log(Level.ALL, "Starting application. Version " + version);
         startView = StartView.getInstance();

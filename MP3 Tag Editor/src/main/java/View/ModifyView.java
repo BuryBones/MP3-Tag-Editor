@@ -210,13 +210,11 @@ public class ModifyView extends JDialog {
                     } else {
                         controller.submit(getDataFromFields(), tagCheck.isSelected());
                     }
-                    controller.clearSelectedFiles();
                     startView.resetSelectedFiles();
                     startView.setModifyView(null);
                     JOptionPane.showMessageDialog(mainPanel, "File successfully modified!", "Success",JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                 } catch (NotSupportedException nse) {
-                    controller.clearSelectedFiles();
                     startView.resetSelectedFiles();
                     startView.setModifyView(null);
                     JOptionPane.showMessageDialog(mainPanel, nse.getMessage(), "Tag modifying error!",JOptionPane.ERROR_MESSAGE);
