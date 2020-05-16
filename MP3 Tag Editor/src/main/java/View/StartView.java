@@ -5,6 +5,7 @@ import main.java.Model.Main;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -13,14 +14,12 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 public class StartView {
 
@@ -75,6 +74,14 @@ public class StartView {
     // Setup & inner methods
     private JFrame getFrame() {
         JFrame result = new JFrame("BB MP3 Tag Editor (v" + Main.getVersion() + ")");
+
+        try {
+            BufferedImage bi = ImageIO.read(new File("MP3 Tag Editor\\src\\main\\resources\\rocket.png"));
+
+            result.setIconImage(bi);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension screenDimension = toolkit.getScreenSize();

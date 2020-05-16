@@ -156,6 +156,7 @@ public class ModifyView extends JDialog {
     }
     private void singleView() {
         mainPanel.setLayout(new GridLayout(9,2));
+        titleText.setText(controller.getOriginalFileName());
 
         mainPanel.add(proposeArtist);
         mainPanel.add(proposeTitle);

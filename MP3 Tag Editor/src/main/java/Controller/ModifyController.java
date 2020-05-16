@@ -22,6 +22,7 @@ public class ModifyController {
     public String getArtistName() {
         return model.getArtistName();
     }
+    public String getOriginalFileName() { return model.getOriginalFileName(); }
 
     public String excludeString(String excludeFrom, String excludeThat) {
         return model.excludeString(excludeFrom, excludeThat);

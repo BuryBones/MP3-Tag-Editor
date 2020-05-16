@@ -48,7 +48,11 @@ public class ModifyModel {
     private String year = "";
     private String genre = "";
     private String originalArtist = "";
-
+    // The following method returns an original file name (works only with a single file)
+    public String getOriginalFileName() {
+        String result = startModel.getMp3Files().get(0).getShortName();
+        return result.endsWith(".mp3") ? result.substring(0,result.length()-4) : result;
+    }
     // The following method is used if there were no manual changes in modify 'manual' table
     public void submit(String[] submitData, boolean use3v23) throws IOException, NotSupportedException {
         // [0] title; [1] track; [2] artist; [3] album; [4] year; [5] genre;

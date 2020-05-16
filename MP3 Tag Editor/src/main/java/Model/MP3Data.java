@@ -113,15 +113,17 @@ public class MP3Data {
 
     void saveChanges(boolean version2_3) throws IOException, NotSupportedException {
 
-        String fileName = getShortName();
+        StringBuilder fileNameSb = new StringBuilder();
+        fileNameSb.append(artist + " - " + name);
         updateTag(version2_3);
         mp3File.setId3v2Tag(tag);
         File savingFolder = new File(directory.toString() + "\\" + "Modified");
         if (!savingFolder.isDirectory()) {
             if (!savingFolder.mkdir()) throw new IOException("Failed to create a folder " + savingFolder.getAbsolutePath());
         }
-        mp3File.save(savingFolder.getAbsolutePath() + "\\" + fileName);
-        logger.info(String.format("MP3 File %s saved to %s", fileName, savingFolder));
+        if (!fileNameSb.toString().endsWith(".mp3")) fileNameSb.append(".mp3");
+        mp3File.save(savingFolder.getAbsolutePath() + "\\" + fileNameSb);
+        logger.info(String.format("MP3 File %s saved to %s", fileNameSb, savingFolder));
     }
 
     String getShortName() {
