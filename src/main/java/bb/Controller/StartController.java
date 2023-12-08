@@ -1,7 +1,7 @@
-package main.java.Controller;
+package bb.Controller;
 
-import main.java.Model.StartModel;
-import main.java.View.StartView;
+import bb.Model.StartModel;
+import bb.View.StartView;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 

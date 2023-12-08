@@ -1,6 +1,7 @@
-package main.java.View;
+package bb.View;
 
-import main.java.Controller.ModifyController;
+import bb.Controller.ModifyController;
+import bb.Model.Main;
 import com.mpatric.mp3agic.NotSupportedException;
 
 import javax.swing.*;
@@ -12,10 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 public class ModifyView extends JDialog {
 
@@ -26,8 +24,8 @@ public class ModifyView extends JDialog {
     private static Logger logger = Logger.getLogger(ModifyView.class.getSimpleName());
     static
     {
-        logger.addHandler(main.java.Model.Main.warning);
-        logger.addHandler(main.java.Model.Main.common);
+        logger.addHandler(Main.warning);
+        logger.addHandler(Main.common);
     }
 
     private boolean isManuallyChanged;

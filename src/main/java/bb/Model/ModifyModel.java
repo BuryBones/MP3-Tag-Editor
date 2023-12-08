@@ -1,16 +1,13 @@
-package main.java.Model;
+package bb.Model;
 
-import main.java.Controller.ModifyController;
+import bb.Controller.ModifyController;
 import com.mpatric.mp3agic.ID3v1Genres;
 import com.mpatric.mp3agic.NotSupportedException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,8 +17,8 @@ public class ModifyModel {
     private static Logger logger = Logger.getLogger(ModifyModel.class.getSimpleName());
     static
     {
-        logger.addHandler(main.java.Model.Main.warning);
-        logger.addHandler(main.java.Model.Main.common);
+        logger.addHandler(Main.warning);
+        logger.addHandler(Main.common);
     }
 
     private StartModel startModel;

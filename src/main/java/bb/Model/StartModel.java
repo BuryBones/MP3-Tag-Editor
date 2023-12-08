@@ -1,6 +1,6 @@
-package main.java.Model;
+package bb.Model;
 
-import main.java.Controller.StartController;
+import bb.Controller.StartController;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.FileHandler;
-import java.util.logging.SimpleFormatter;
 
 public class StartModel {
 
@@ -19,8 +17,8 @@ public class StartModel {
     private static Logger logger = Logger.getLogger(StartModel.class.getSimpleName());
     static
     {
-        logger.addHandler(main.java.Model.Main.warning);
-        logger.addHandler(main.java.Model.Main.common);
+        logger.addHandler(Main.warning);
+        logger.addHandler(Main.common);
     }
 
     private StartController controller;

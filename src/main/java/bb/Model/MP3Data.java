@@ -1,4 +1,4 @@
-package main.java.Model;
+package bb.Model;
 
 import com.mpatric.mp3agic.*;
 
@@ -20,8 +20,8 @@ public class MP3Data {
     private static Logger logger = Logger.getLogger(MP3Data.class.getSimpleName());
     static
     {
-            logger.addHandler(main.java.Model.Main.warning);
-            logger.addHandler(main.java.Model.Main.common);
+            logger.addHandler(Main.warning);
+            logger.addHandler(Main.common);
     }
 
     private Mp3File mp3File;

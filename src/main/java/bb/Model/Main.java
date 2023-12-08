@@ -1,7 +1,7 @@
-package main.java.Model;
+package bb.Model;
 
-import main.java.Controller.StartController;
-import main.java.View.StartView;
+import bb.View.StartView;
+import bb.Controller.StartController;
 
 import java.io.IOException;
 import java.util.logging.FileHandler;
@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class Main {
-    private static String version = "1.00";
+    private static String version = "1.0";
 
     // logger setup
     public static Logger mainLogger = Logger.getLogger(Main.class.getSimpleName());

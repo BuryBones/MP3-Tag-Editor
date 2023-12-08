@@ -1,4 +1,4 @@
-package main.java.Model;
+package bb.Model;
 
 import javax.swing.filechooser.FileFilter;
 import java.io.File;

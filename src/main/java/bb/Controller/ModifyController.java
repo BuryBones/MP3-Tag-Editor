@@ -1,7 +1,7 @@
-package main.java.Controller;
+package bb.Controller;
 
-import main.java.Model.ModifyModel;
-import main.java.View.ModifyView;
+import bb.Model.ModifyModel;
+import bb.View.ModifyView;
 import com.mpatric.mp3agic.NotSupportedException;
 
 import java.io.IOException;

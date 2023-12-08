@@ -1,7 +1,7 @@
-package main.java.View;
+package bb.View;
 
-import main.java.Controller.StartController;
-import main.java.Model.Main;
+import bb.Controller.StartController;
+import bb.Model.Main;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
@@ -42,8 +42,8 @@ public class StartView {
     private static Logger logger = Logger.getLogger(StartView.class.getSimpleName());
     static
     {
-        logger.addHandler(main.java.Model.Main.warning);
-        logger.addHandler(main.java.Model.Main.common);
+        logger.addHandler(Main.warning);
+        logger.addHandler(Main.common);
     }
 
     private ModifyView modifyView;

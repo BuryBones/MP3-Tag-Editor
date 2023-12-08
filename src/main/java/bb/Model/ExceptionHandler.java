@@ -1,4 +1,4 @@
-package main.java.Model;
+package bb.Model;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,8 +10,8 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
     private static Logger logger = Logger.getLogger(ExceptionHandler.class.getSimpleName());
     static
     {
-        logger.addHandler(main.java.Model.Main.warning);
-        logger.addHandler(main.java.Model.Main.common);
+        logger.addHandler(Main.warning);
+        logger.addHandler(Main.common);
     }
 
     @Override
